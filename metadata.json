@@ -1,0 +1,5 @@
+{
+  "name": "House Manager",
+  "description": "Government housing management system with drag-and-drop room assignment and AI-powered resident generation.",
+  "requestFramePermissions": []
+}
