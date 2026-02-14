@@ -570,10 +570,21 @@ const App: React.FC = () => {
             const room = floor.rooms.find((r: any) => r.id === roomId);
             if(room) {
                 if (!room.bills) room.bills = {};
-                if (!room.bills[currentMonth]) room.bills[currentMonth] = { water: 0, electricity: 0 };
+                if (!room.bills[currentMonth]) room.bills[currentMonth] = { water: 0, electricity: 0, waterUnits: 0, electricityUnits: 0 };
                 
                 room.bills[currentMonth][type] = value;
-                // saveDataToSupabase is optional here for debouncing
+                
+                // Save to Supabase (added for consistency)
+                saveDataToSupabase('Bills', 'ADD', { 
+                    id: `${room.id}-${currentMonth}`, 
+                    roomId, 
+                    roomNumber: room.number,
+                    month: currentMonth, 
+                    waterUnits: room.bills[currentMonth].waterUnits || 0,
+                    waterPrice: room.bills[currentMonth].water || 0,
+                    electricityUnits: room.bills[currentMonth].electricityUnits || 0,
+                    electricityPrice: room.bills[currentMonth].electricity || 0
+                });
                 break;
             }
         }
@@ -671,7 +682,14 @@ const App: React.FC = () => {
                 bills: {}
             };
             floor.rooms.push(newRoom);
-            saveDataToSupabase('Rooms', 'ADD', { ...newRoom, floorId, buildingId: building.id });
+            
+            // Only send schema-compliant fields to Supabase
+            saveDataToSupabase('Rooms', 'ADD', { 
+                id: newRoom.id, 
+                number: newRoom.number, 
+                type: newRoom.type, 
+                floorId: floor.id 
+            });
         }
         return newBuildings;
     });

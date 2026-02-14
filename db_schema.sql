@@ -68,34 +68,38 @@ CREATE TABLE IF NOT EXISTS "House-Management"."Bills" (
     "created_at" timestamp with time zone DEFAULT now()
 );
 
--- 3. (Optional) Enable RLS (Row Level Security) if you want to restrict access
--- For this setup, we will allow public access (service role/anon key) to keep it simple as per request.
--- But we ensure RLS is enabled on tables to follow best practices, 
--- and add a policy to allow all operations for now.
+-- 3. Enable RLS (Row Level Security) and Policies
+-- We drop existing policies first to prevent "policy already exists" errors when re-running the script.
 
 ALTER TABLE "House-Management"."Users" ENABLE ROW LEVEL SECURITY;
+DROP POLICY IF EXISTS "Enable all access for all users" ON "House-Management"."Users";
 CREATE POLICY "Enable all access for all users" ON "House-Management"."Users" FOR ALL USING (true) WITH CHECK (true);
 
 ALTER TABLE "House-Management"."Buildings" ENABLE ROW LEVEL SECURITY;
+DROP POLICY IF EXISTS "Enable all access for all users" ON "House-Management"."Buildings";
 CREATE POLICY "Enable all access for all users" ON "House-Management"."Buildings" FOR ALL USING (true) WITH CHECK (true);
 
 ALTER TABLE "House-Management"."Floors" ENABLE ROW LEVEL SECURITY;
+DROP POLICY IF EXISTS "Enable all access for all users" ON "House-Management"."Floors";
 CREATE POLICY "Enable all access for all users" ON "House-Management"."Floors" FOR ALL USING (true) WITH CHECK (true);
 
 ALTER TABLE "House-Management"."Rooms" ENABLE ROW LEVEL SECURITY;
+DROP POLICY IF EXISTS "Enable all access for all users" ON "House-Management"."Rooms";
 CREATE POLICY "Enable all access for all users" ON "House-Management"."Rooms" FOR ALL USING (true) WITH CHECK (true);
 
 ALTER TABLE "House-Management"."Residents" ENABLE ROW LEVEL SECURITY;
+DROP POLICY IF EXISTS "Enable all access for all users" ON "House-Management"."Residents";
 CREATE POLICY "Enable all access for all users" ON "House-Management"."Residents" FOR ALL USING (true) WITH CHECK (true);
 
 ALTER TABLE "House-Management"."Bills" ENABLE ROW LEVEL SECURITY;
+DROP POLICY IF EXISTS "Enable all access for all users" ON "House-Management"."Bills";
 CREATE POLICY "Enable all access for all users" ON "House-Management"."Bills" FOR ALL USING (true) WITH CHECK (true);
 
 -- 4. Grant Usage on Schema to anon and service_role
 GRANT USAGE ON SCHEMA "House-Management" TO anon, service_role;
 GRANT ALL ON ALL TABLES IN SCHEMA "House-Management" TO anon, service_role;
 
--- 5. RESET USERS (Added per request)
+-- 5. RESET USERS
 TRUNCATE TABLE "House-Management"."Users";
 
 INSERT INTO "House-Management"."Users" (id, username, password, role, name)
