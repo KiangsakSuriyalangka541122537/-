@@ -13,9 +13,7 @@ const WATER_UNIT_PRICE = 18; // Price per unit for water
 const ELECTRICITY_UNIT_PRICE = 7; // Price per unit for electricity
 
 const INITIAL_USERS: User[] = [
-    { id: '1', username: 'poepae', password: 'poepae', role: 'ADMIN', name: 'ผู้ดูแลระบบสูงสุด' },
-    { id: '2', username: 'water', password: 'water', role: 'WATER', name: 'เจ้าหน้าที่จดมิเตอร์น้ำ' },
-    { id: '3', username: 'electric', password: 'electric', role: 'ELECTRIC', name: 'เจ้าหน้าที่จดมิเตอร์ไฟ' }
+    { id: 'admin-popa', username: 'popa', password: 'popa', role: 'ADMIN', name: 'ผู้ดูแลระบบสูงสุด' }
 ];
 
 // --- Helper for Date ---
@@ -225,7 +223,7 @@ const App: React.FC = () => {
     try {
         const initialBuildings = createInitialBuildings();
 
-        // 1. Seed Users
+        // 1. Seed Users (Popa)
         for (const u of INITIAL_USERS) {
             await saveDataToSupabase('Users', 'ADD', u);
         }
